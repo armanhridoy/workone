@@ -1,0 +1,74 @@
+﻿@model IEnumerable<workone.VmModel.VmStudent>
+@{
+
+}
+<p>
+    <a class="btn btn-sm btn-dark" asp-action="CreateOrEdit">Create New</a>
+</p>
+
+<div class="container">
+    <div class="row mx-auto">
+        <table class="table  table-striped bg-secondary" id="studentTable">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>StudentId</th>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Phone</th>
+                    <th>Address</th>
+                    <th>DateOfBirth</th>
+                    <th>TutionFee</th>
+                    <th>Joining Date</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+
+    </div>
+
+</div>
+
+@section scripts {
+    <script>
+        $(document).ready(function () {
+            // AJAX call to retrieve data
+            new DataTable('#studentTable');
+            $.ajax({
+                url: '@Url.Action("GetAllStudent", "Student")', // Update with your actual action and controller names
+                type: 'GET',
+                success: function (data) {
+                    // Bind data to tbody
+                    var tbody = $('#studentTable tbody');
+                    tbody.empty();
+                    $.each(data, function (index, item) {
+
+                        console.log(data)
+                        debugger;
+                        var row = '<tr>' +
+                            '<td>' + (index + 1) + '</td>' +
+                            '<td>' + (item.StudentId ) + '</td>' +
+                            '<td>' + (item.Name ) + '</td>' +
+                            '<td>' + item.Email + '</td>' +
+                            '<td>' + item.Phone + '</td>' +
+                            '<td>' + item.Address + '</td>' +
+                            '<td>' + item.DateOfBirth + '</td>' +
+                            '<td>' + item.TutionFee + '</td>' +
+                            '<td>' + item.Joining_date + '</td>' +
+                            '<td>' +
+                            '<a class="btn btn-sm btn-primary" href="@Url.Action("CreateOrEdit", "Student")/' + item.id + '">Edit</a> ' +
+                            '<a class="btn btn-sm btn-danger" href="@Url.Action("Delete", "Student")/' + item.id + '" onclick="return confirm(\'Are You Sure?\')">Delete</a>' +
+                            '</td>' +
+                            '</tr>';
+                        tbody.append(row);
+                    });
+                }
+            });
+
+
+        });
+    </script>
+}
+
